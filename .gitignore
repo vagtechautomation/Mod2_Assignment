@@ -2,3 +2,4 @@
 .project
 .settings
 .tern-project
+./angular.min.js

@@ -1,50 +1,78 @@
 (function (){
 	'use strict';
 	
-	var shoppingList = [
-		{
-			name:" Milk ",
-			quantity : "3 Gallons"
-			
-		},
-		{
-			name : "Chips",
-			quantity:" 3 bags"
-		},
-		{
-			name:"Soda",
-			quantity:"1 case"
-		},
-		{
-			name:"Cookies",
-			quantity:"1 box"
-		},
-		{
-			name:"Water",
-			quantity:"1 case"
-		}
-	];
-	var boughtItemList=[];
+	angular.module('ShoppingListApp',[])
+		.controller('ToBuyListController',ToBuyListController)
+		.controller('BoughtListController',BoughtListController)
+		.service('ShoppingListService',ShoppingListService);
 	
-angular.module('ShoppingListApp',[])
-		.controller('ShoppingListController',ShoppingListController);
-	
-		ShoppingListController.$inject = ['$scope'];
+		ToBuyListController.$inject = ['ShoppingListService'];
 		
-		function ShoppingListController($scope){
-			$scope.shoppingList = shoppingList
-			$scope.boughtItemList = boughtItemList;
+		function ToBuyListController(ShoppingListService){
+			var buyCntrl = this;
+			buyCntrl.items = ShoppingListService.getToBuyItems();
 			
-			$scope.updateList = function(itemIndex){
-				var item = shoppingList[itemIndex];
+			buyCntrl.itemBought = function(itemIndex,name,quantity){
+				ShoppingListService.itemBought(itemIndex,name,quantity);
+			}			
+		}	
+		BoughtListController.$inject = ['ShoppingListService'];
+			
+		function BoughtListController(ShoppingListService){
+			var boughtCntrl = this;
+			boughtCntrl.items = ShoppingListService.getBoughtItems();
 		
-				var newItem ={
-						name:item.name,
-						quantity:item.quantity
+			}
+		
+		function ShoppingListService(){
+			var service = this;
 			
-				};
-				$scope.boughtItemList.push(newItem);
-				$scope.shoppingList.splice(itemIndex,1);
+			var toBuyItems= [
+		            		{
+		            			name:" Milk ",
+		            			quantity : "3 Gallons"
+		            			
+		            		},
+		            		{
+		            			name : "Chips",
+		            			quantity:" 3 bags"
+		            		},
+		            		{
+		            			name:"Soda",
+		            			quantity:"1 case"
+		            		},
+		            		{
+		            			name:"Cookies",
+		            			quantity:"1 box"
+		            		},
+		            		{
+		            			name:"Water",
+		            			quantity:"1 case"
+		            		}
+		            	];
+		  var boughtItemList=[];
+		  
+		  service.removeItem = function (itemIndex) {
+			  toBuyItems.splice(itemIndex, 1);
+		  };
+
+		  service.getToBuyItems = function () {
+		    return toBuyItems;
+		  };
+		  service.addBoughtItems = function(name,quantity){
+			  var newItem={
+			               name:name,
+			               quantity:quantity
+			  };
+			  boughtItemList.push(newItem);
+		  };
+		  service.getBoughtItems = function(){
+			  return  boughtItemList;
+		  };
+		  service.itemBought = function(itemIndex,name,quantity){
+			  service.addBoughtItems(name,quantity)
+			  service.removeItem(itemIndex);
 			}
 		}
+
 })();

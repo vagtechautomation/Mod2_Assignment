@@ -14,6 +14,14 @@
 		{
 			name:"Soda",
 			quantity:"1 case"
+		},
+		{
+			name:"Cookies",
+			quantity:"1 box"
+		},
+		{
+			name:"Water",
+			quantity:"1 case"
 		}
 	];
 	var boughtItemList=[];

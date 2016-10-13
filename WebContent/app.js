@@ -68,6 +68,7 @@
 		  };
 		  service.getBoughtItems = function(){
 			  return  boughtItemList;
+			  
 		  };
 		  service.itemBought = function(itemIndex,name,quantity){
 			  service.addBoughtItems(name,quantity)
